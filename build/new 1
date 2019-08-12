@@ -1,1 +1,0 @@
-./darknet.exe detect yolo-obj.cfg backup/yolo-obj_final.weights data/img/0.25/DSC_0002.JPG
