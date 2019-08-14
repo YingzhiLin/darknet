@@ -1503,5 +1503,19 @@ void run_detector(int argc, char **argv)
         free_list_contents_kvp(options);
         free_list(options);
     }
+    else if (0 == strcmp(argv[2], "demo2")) {
+        list* options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char* name_list = option_find_str(options, "names", "data/names.list");
+        char** names = get_labels(name_list);
+        if (filename)
+            if (strlen(filename) > 0)
+                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
+        demo2(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, prefix, out_filename,
+            mjpeg_port, json_port, dont_show, ext_output, letter_box);
+
+        free_list_contents_kvp(options);
+        free_list(options);
+    }
     else printf(" There isn't such command: %s", argv[2]);
 }
