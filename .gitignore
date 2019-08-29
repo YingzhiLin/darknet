@@ -11,6 +11,10 @@
 *.dylib
 mnist/
 data/
+d/
+img/
+backup/
+result/
 caffe/
 grasp/
 images/
