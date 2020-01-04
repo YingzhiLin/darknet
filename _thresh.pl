@@ -29,12 +29,12 @@ my $abstract;
 my $csv;
 open($detail, ">", $outputName.'.detail.txt');
 open($abstract, ">", $outputName . '.abstract.txt');
-open($csv, ">", $outputName . '.csv.txt');
+open($csv, ">", $outputName . '.csv');
 
 my $f;
 open($f, "<", $outputName . ".txt");
 
-my @keys = ("forconf_thresh","precision", "recall", "averageIoU", "F1-Score", "TP", "FP", "FN", "mAP");
+my @keys = ("forconf_thresh","precision", "recall", "averageIoU", "F1-score", "TP", "FP", "FN", "mAP");
 
 print $csv join(',', @keys, "\n");
 

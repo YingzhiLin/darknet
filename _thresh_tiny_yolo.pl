@@ -2,23 +2,25 @@
 use strict;
 use warnings;
 
-my $outputName = "./d/map_" . dtStr();
+print "Usage: ./_thresh_tiny_yolo.pl ./d/weights/yolov3-tiny_obj_4000.weights 0.05 0.05\n";
 
-my $dir;
-opendir($dir, "./d/weights") or die "fail to open weights dir";
-my @fileNames = sort readdir($dir);
-closedir($dir);
+return if @ARGV < 3;
+my $weight = $ARGV[0];
+my $start  = $ARGV[1] + 0;
+my $step   = $ARGV[2] + 0;
 
-for my $weight (@fileNames){
-    next if $weight eq '.';
-    next if $weight eq '..';
-    next if $weight !~ /\.weights$/i;
+my $outputName = "./d/thresh_" . dtStr();
 
-    print $weight . "\n";
-    writeTxt( "\n" . '>' .  $weight, $outputName . ".txt");
+my $thresh = $start;
+while($thresh <= 1){
 
-    my $cmd = "./darknet detector map d/obj.data d/yolo-obj.cfg d/weights/" . $weight . " >>" . $outputName . ".txt";	
+    print $thresh . "\n";
+    writeTxt( "\n" . '>' .  $thresh, $outputName . ".txt");
+
+    my $cmd = "./darknet detector map d/obj.data d/yolov3-tiny_obj.cfg " . $weight . " -thresh ". $thresh." -iou_thresh ".$thresh." >>" . $outputName . ".txt";	
     my $echo = system($cmd);
+	
+	$thresh+=$step;
 }
 
 # now find the information from outputName
@@ -32,7 +34,8 @@ open($csv, ">", $outputName . '.csv');
 my $f;
 open($f, "<", $outputName . ".txt");
 
-my @keys = ("iterator", "forconf_thresh","precision", "recall", "averageIoU", "F1-score", "TP", "FP", "FN", "mAP");
+my @keys = ("forconf_thresh","precision", "recall", "averageIoU", "F1-score", "TP", "FP", "FN", "mAP");
+
 print $csv join(',', @keys, "\n");
 
 my %result = ();
@@ -41,20 +44,16 @@ while( my $line=<$f>){
 	if($line =~ /^>/){
 		print $detail $line;
 		print $abstract $line;
-		my $s = $line;
-		if($s =~ /(\d+)\./){
-			$result{"iterator"} = $1;
-		}
 	}
 	if($line =~ / mean average precision/) {
 		print $detail $line;
 		print $abstract $line;
-		
+						
 		# mean average precision (mAP@0.25) = 0.496869, or 49.69 %
 		if($line =~ /= (.*),/){
 		    $result{"mAP"} = $1;
 		}
-				
+		
 		for(my $i=0; $i<@keys; $i++){
 		    if(exists $result{$keys[$i]}){
 			    print $csv $result{$keys[$i]}, ",";
@@ -74,7 +73,6 @@ while( my $line=<$f>){
 	if($line =~ /^ for conf_thresh/) {
 		print $detail $line;
 		
-				
 		my $s = $line;
 		chomp($s);
 		my @paras = split(/,/, $s);
@@ -85,7 +83,7 @@ while( my $line=<$f>){
             if($k ne "" && $v ne ""){
 			    $result{$k} = $v;				
 			}			
-		}	
+		}		
 	}   
 }
 
@@ -123,3 +121,4 @@ sub writeTxt{
     print $f $s . "\n";
     close($f);
 }
+

@@ -27,12 +27,12 @@ my $abstract;
 my $csv;
 open($detail, ">", $outputName.'.detail.txt');
 open($abstract, ">", $outputName . '.abstract.txt');
-open($csv, ">", $outputName . '.csv.txt');
+open($csv, ">", $outputName . '.csv');
 
 my $f;
 open($f, "<", $outputName . ".txt");
 
-my @keys = ("forconf_thresh","precision", "recall", "averageIoU", "F1-Score", "TP", "FP", "FN", "mAP");
+my @keys = ("iterator", "forconf_thresh","precision", "recall", "averageIoU", "F1-score", "TP", "FP", "FN", "mAP");
 print $csv join(',', @keys, "\n");
 
 my %result = ();
@@ -41,6 +41,10 @@ while( my $line=<$f>){
 	if($line =~ /^>/){
 		print $detail $line;
 		print $abstract $line;
+		my $s = $line;
+		if($s =~ /(\d+)\./){
+			$result{"iterator"} = $1;
+		}
 	}
 	if($line =~ / mean average precision/) {
 		print $detail $line;
