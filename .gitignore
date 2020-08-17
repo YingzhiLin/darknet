@@ -63,6 +63,7 @@ darknet
 
 # file download from yolo
 darknet53.conv.74
+yolov4.conv.137
 
 # generated jpg and others
 predictions.jpg
