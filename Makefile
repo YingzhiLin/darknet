@@ -1,10 +1,10 @@
-GPU=0
-CUDNN=0
-CUDNN_HALF=0
-OPENCV=0
+GPU=1
+CUDNN=1
+CUDNN_HALF=1
+OPENCV=1
 AVX=0
-OPENMP=0
-LIBSO=0
+OPENMP=1
+LIBSO=1
 ZED_CAMERA=0
 
 # set GPU=1 and CUDNN=1 to speedup on GPU
@@ -76,8 +76,8 @@ CFLAGS+=$(OPTS)
 ifeq ($(OPENCV), 1)
 COMMON+= -DOPENCV
 CFLAGS+= -DOPENCV
-LDFLAGS+= `pkg-config --libs opencv`
-COMMON+= `pkg-config --cflags opencv`
+LDFLAGS+= `pkg-config --libs opencv4`
+COMMON+= `pkg-config --cflags opencv4`
 endif
 
 ifeq ($(OPENMP), 1)
@@ -89,7 +89,7 @@ ifeq ($(GPU), 1)
 COMMON+= -DGPU -I/usr/local/cuda/include/
 CFLAGS+= -DGPU
 ifeq ($(OS),Darwin) #MAC
-LDFLAGS+= -L/usr/local/cuda/lib -lcuda -lcudart -lcublas -lcurand
+LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 else
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
@@ -99,7 +99,7 @@ ifeq ($(CUDNN), 1)
 COMMON+= -DCUDNN
 ifeq ($(OS),Darwin) #MAC
 CFLAGS+= -DCUDNN -I/usr/local/cuda/include
-LDFLAGS+= -L/usr/local/cuda/lib -lcudnn
+LDFLAGS+= -L/usr/local/cuda/lib64 -lcudnn
 else
 CFLAGS+= -DCUDNN -I/usr/local/cudnn/include
 LDFLAGS+= -L/usr/local/cudnn/lib64 -lcudnn

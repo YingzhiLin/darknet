@@ -11,14 +11,14 @@
 *.dylib
 mnist/
 data/
-d/
-img/
-backup/
-result/
+d/*/**
+img/*/**
+backup/*/**
+results/
 caffe/
 grasp/
-images/
-opencv/
+images/*/**
+opencv/*/**
 convnet/
 decaf/
 submission/
@@ -60,3 +60,10 @@ include/darknet/
 uselib
 uselib_track
 darknet
+
+# file download from yolo
+darknet53.conv.74
+
+# generated jpg and others
+predictions.jpg
+bad.list

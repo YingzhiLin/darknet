@@ -51,7 +51,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         int names_size = 0;
         char **names = get_labels_custom(name_list, &names_size);
         if (net_classes != names_size) {
-            printf(" Error: in the file %s number of names %d that isn't equal to classes=%d in the file %s \n",
+W            printf(" Error: in the file %s number of names %d that isn't equal to classes=%d in the file %s \n",
                 name_list, names_size, net_classes, cfgfile);
             if (net_classes > names_size) getchar();
         }
@@ -296,7 +296,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
         //if (i % 1000 == 0 || (i < 1000 && i % 100 == 0)) {
         //if (i % 100 == 0) {
-        if (i >= (iter_save + 1000) || i % 1000 == 0) {
+        if (i >= (iter_save + 100) || i % 100 == 0) {
             iter_save = i;
 #ifdef GPU
             if (ngpus != 1) sync_nets(nets, ngpus, 0);
