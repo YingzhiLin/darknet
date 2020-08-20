@@ -4,7 +4,8 @@ use warnings;
 
 print "Usage: ./_thresh.pl ./d/weights/yolo-obj_1400.weights 0.05 0.05\n";
 
-return if @ARGV < 3;
+exit 0 if @ARGV < 3;
+
 my $weight = $ARGV[0];
 my $start  = $ARGV[1] + 0;
 my $step   = $ARGV[2] + 0;
